@@ -21,21 +21,19 @@ class _MyCatalogState extends State<MyCatalog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
+      body: Column(
+        children: [
           _MyAppBar(),
-          const SliverToBoxAdapter(child: SizedBox(height: 12)),
-          BlocBuilder<CartBloc,CartState>(
+          Expanded(child: BlocBuilder<CartBloc, CartState>(
             builder: (_, state) {
-              return SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) =>
-                      _MyListItem(_catalogBloc.getListItems()[index]),
-                  childCount: _catalogBloc.getListItems().length,
-                ),
+              return ListView.builder(
+                itemBuilder: (_, index) {
+                  return _MyListItem(_catalogBloc.getListItems()[index]);
+                },
+                itemCount: _catalogBloc.getListItems().length,
               );
             },
-          ),
+          )),
         ],
       ),
     );
@@ -62,9 +60,7 @@ class _AddButton extends StatelessWidget {
           : () {
               context.read<CartBloc>().add(item);
             },
-      child: isInCart
-          ? const Icon(Icons.check )
-          : const Text('Thêm'),
+      child: isInCart ? const Icon(Icons.check) : const Text('Thêm'),
     );
   }
 }
@@ -72,9 +68,8 @@ class _AddButton extends StatelessWidget {
 class _MyAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
+    return AppBar(
       title: Text('Danh mục', style: TextStyle(color: Colors.white)),
-      floating: true,
       actions: [
         IconButton(
           icon: const Icon(Icons.shopping_cart),
