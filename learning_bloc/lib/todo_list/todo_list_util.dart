@@ -4,9 +4,9 @@ bool validateAndSave(GlobalKey<FormState> key) {
   FormState? form = key.currentState;
   if (form?.validate() ?? false) {
     form?.save();
-    return true;
+    return false;
   }
-  return false;
+  return true;
 }
 
 String? validName(String? value) {

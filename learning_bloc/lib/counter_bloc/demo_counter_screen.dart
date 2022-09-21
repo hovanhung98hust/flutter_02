@@ -29,7 +29,7 @@ class _CounterPageState extends State<CounterPage> {
     testSaveDataLocal();
   }
 
-  void testSaveDataLocal()async{
+  void testSaveDataLocal() async {
     await prefs.setInt('counter', 10);
 // Save an boolean value to 'repeat' key.
     await prefs.setBool('repeat', true);
@@ -74,31 +74,56 @@ class _CounterPageState extends State<CounterPage> {
             ),
           ],
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              BlocListener<CounterCubit2, int>(
-                bloc: _counterCubit2,
-                listener: (context, count) {},
-                child: BlocListener<CounterCubit, int>(
-                  bloc: _counterCubit,
-                  listener: (context, count) {
-                    if (count.runtimeType == int && count % 5 == 0) {
-                      print('lucky number');
-                    }
-                  },
-                  child: BlocBuilder<CounterCubit, int>(
-                    builder: (context, count) => Center(child: Text('$count')),
-                    bloc: _counterCubit,
-                  ),
-                ),
+              // BlocListener<CounterCubit2, int>(
+              //   bloc: _counterCubit2,
+              //   listener: (context, count) {},
+              //   child: BlocListener<CounterCubit, int>(
+              //     bloc: _counterCubit,
+              //     listener: (context, count) {
+              //       if (count.runtimeType == int && count % 5 == 0) {
+              //         print('lucky number');
+              //       }
+              //     },
+              //     child: BlocBuilder<CounterCubit, int>(
+              //       builder: (context, count) => Center(child: Text('$count')),
+              //       bloc: _counterCubit,
+              //     ),
+              //   ),
+              // ),
+              // BlocConsumer<CounterCubit, int>(
+              //     bloc: _counterCubit,
+              //     builder: (context, count) => Center(child: Text('$count')),
+              //     listener: (context, count) {
+              //       if (count.runtimeType == int && count % 5 == 0) {
+              //         print('lucky number');
+              //       }
+              //     }),
+              InkWell(
+                child: Text('Luu du lieu'),
+                onTap: () async {
+                  String data =
+                      'Toi da o day luc ${DateTime.now().hour} ${DateTime.now().minute} ${DateTime.now().second}';
+                  SharedPreferences preferance =
+                      await SharedPreferences.getInstance();
+                  preferance.setString('TestLuuString', data);
+                },
               ),
-              BlocConsumer<CounterCubit, int>(
-                  bloc: _counterCubit,
-                  builder: (context, count) => Center(child: Text('$count')),
-                  listener: (context, count) {
-                    if (count.runtimeType == int && count % 5 == 0) {
-                      print('lucky number');
-                    }
-                  }),
+              const SizedBox(
+                height: 20,
+              ),
+              InkWell(
+                child: Text('Lay du lieu'),
+                onTap: () async {
+                  SharedPreferences preferance =
+                      await SharedPreferences.getInstance();
+                  String duLieuDaLuu =
+                      preferance.getString('TestLuuString') ?? '';
+                  print('duLieuDaLuu: $duLieuDaLuu');
+                },
+              ),
             ],
           ),
         ),

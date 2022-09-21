@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_bloc/todo_list/bloc/todo_list_state.dart';
+import 'package:learning_bloc/todo_list/bloc/todo_list_utils.dart';
 import 'package:learning_bloc/todo_list/todo_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,6 +27,7 @@ class TodoListCubit extends Cubit<TodoListState> {
       }
     }
     emit(TodoListCreatingState());
+    await Future.delayed(Duration(seconds: 2));
     final model = TodoModel(
       id: '${DateTime.now().millisecondsSinceEpoch}',
       name: name,
@@ -50,7 +54,12 @@ class TodoListCubit extends Cubit<TodoListState> {
         sharedPreferences!.getStringList('saveDataToLocal');
     if (listStringLocal != null && listStringLocal.isNotEmpty) {
       for (String obj in listStringLocal) {
-        final model = TodoModel.fromStringLocal(obj);
+        Map<String,dynamic> dataJson = jsonDecode(obj);
+        TodoModel model = TodoModel();
+        model.name = dataJson['name'];
+        model.id = dataJson['id'];
+        model.dateTime = dataJson['dateTime'];
+
         listTodo.add(model);
       }
     }
@@ -59,13 +68,23 @@ class TodoListCubit extends Cubit<TodoListState> {
 
   // Lưu list todo vào local storage
   Future saveDataToLocal() async {
+    // int, double, string, bool, List<String>
     if (sharedPreferences == null) {
       sharedPreferences = await SharedPreferences.getInstance();
     }
     List<String> listDataString = [];
-    for (TodoModel obj in listTodo) {
-      listDataString.add(obj.convertJsonToString());
+    for (TodoModel model in listTodo) {
+      // buoc 1
+      Map<String, dynamic> dataJson = Map<String, dynamic>();
+      dataJson['name'] = model.name;
+      dataJson['id'] = model.id;
+      dataJson['dateTime'] = model.dateTime;
+
+      // buoc 2
+      String dataString = jsonEncode(dataJson);
+      listDataString.add(dataString);
     }
+
     await sharedPreferences!.setStringList('saveDataToLocal', listDataString);
   }
 

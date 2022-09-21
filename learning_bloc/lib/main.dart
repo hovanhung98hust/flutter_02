@@ -21,3 +21,53 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+class FirstPage extends StatefulWidget {
+  const FirstPage({Key? key}) : super(key: key);
+
+  @override
+  State<FirstPage> createState() => _FirstPageState();
+}
+
+class _FirstPageState extends State<FirstPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('firsh'),
+      ),
+      floatingActionButton: IconButton(
+          onPressed: () async {
+            final data = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SecondScreen()),
+            );
+            print(data);
+          },
+          icon: Icon(Icons.add)),
+    );
+  }
+}
+
+class SecondScreen extends StatefulWidget {
+  const SecondScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SecondScreen> createState() => _SecondScreenState();
+}
+
+class _SecondScreenState extends State<SecondScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Second'),
+      ),
+      floatingActionButton: IconButton(
+          onPressed: () {
+            Navigator.pop(context, 'Hello world');
+          },
+          icon: Icon(Icons.add)),
+    );
+  }
+}

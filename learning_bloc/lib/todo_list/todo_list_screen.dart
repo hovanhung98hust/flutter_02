@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_bloc/todo_list/bloc/todo_list_bloc.dart';
@@ -20,6 +19,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
   final _formKey = GlobalKey<FormState>();
   TodoModel? _todoModelSelected;
   FocusNode inputNode = FocusNode();
+  String _name = '';
 
   @override
   void initState() {
@@ -34,7 +34,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
   }
 
   void _onCreate() {
-    if (!validateAndSave(_formKey)) {
+    if (validateAndSave(_formKey)) {
       return;
     }
     _todoListCubit.createItemTodo(_nameController.text);
@@ -123,16 +123,25 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 children: [
                   TextFormField(
                     controller: _nameController,
-                    validator: validName,
+                    // c2
+                    // onChanged: (String? value) {
+                    //   print('nguoi dung dang nhap: $value');
+                    //   _name = value ?? '';
+                    // },
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Vui long nhap ten';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(hintText: 'Nhap ten todo'),
                     focusNode: inputNode,
                     textInputAction: TextInputAction.next,
                   ),
-                  TextFormField(),
                 ],
               ),
             ),
           ),
-
           Expanded(
               child: BlocBuilder<TodoListCubit, TodoListState>(
             bloc: _todoListCubit,
@@ -140,7 +149,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
               if (state is TodoListLoadingState) {
                 return Center(child: CircularProgressIndicator());
               }
-
               if (_todoListCubit.listTodo.isNotEmpty) {
                 _todoListCubit.listTodo.sort(
                     (a, b) => (b.dateTime ?? 0).compareTo((a.dateTime ?? 0)));

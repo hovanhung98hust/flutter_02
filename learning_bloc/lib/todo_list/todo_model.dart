@@ -15,9 +15,7 @@ class TodoModel {
     return data;
   }
 
-  String convertJsonToString() {
-    return jsonEncode(convertModelToJson());
-  }
+
 
   TodoModel.fromStringLocal(String data) {
     Map<String, dynamic> dataJson = jsonDecode(data);
