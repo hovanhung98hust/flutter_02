@@ -14,21 +14,30 @@ class ListProductScreen extends StatefulWidget {
 class _ListProductScreenState extends State<ListProductScreen> {
   bool _runFirstTime = true;
 
-  @override
-  void initState() {
-    super.initState();
+  // chỉ chạy một lân duy nhất trong suốt vòng đời của ListProductScreen(StatefulWidget)
+  void myInitState(ListProductCubit listProductCubit) async {
+    await listProductCubit.convertListStringToListModel();
+    await listProductCubit.getListProductSelected();
   }
 
   @override
   Widget build(BuildContext context) {
     final listProductCubit = BlocProvider.of<ListProductCubit>(context);
+    print('on build call');
     if (_runFirstTime) {
       _runFirstTime = false;
-      listProductCubit.convertListStringToListModel();
+      myInitState(listProductCubit);
+      print('on myInitState call');
     }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Danh sach san pham'),
+        title: InkWell(
+          onTap: () {
+            setState(() {});
+          },
+          child: Text('Danh sach san pham'),
+        ),
         actions: [
           InkWell(
             onTap: () async {
@@ -87,10 +96,12 @@ class _ListProductScreenState extends State<ListProductScreen> {
           if (state is ProductGetSuccessState &&
               listProductCubit.listProduct.isNotEmpty) {
             List<ProductModel> listProducts = listProductCubit.listProduct;
+
             return ListView.separated(
               itemBuilder: (context, index) {
+                ProductModel product = listProducts[index];
                 return ItemProductWidget(
-                  productModel: listProducts[index],
+                  productModel: product,
                   onAddItem: (ProductModel model) {
                     listProductCubit.addItemToCart(model);
                   },

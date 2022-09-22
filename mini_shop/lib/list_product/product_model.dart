@@ -6,4 +6,13 @@ class ProductModel {
   int? price;
 
   ProductModel({this.name, this.color, this.price});
+
+  @override
+  bool operator ==(Object other) {
+    return (other is ProductModel) &&
+        other.name == name &&
+        other.price == price;
+  }
+
+
 }
