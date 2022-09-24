@@ -11,6 +11,10 @@ class ProviderBaseScreen extends StatefulWidget {
 class _ProviderBaseScreenState extends State<ProviderBaseScreen> {
   @override
   Widget build(BuildContext context) {
+    // Student student1 = Student('name');
+    // Student student1 = Student(name: 'hoc sinh 2',id: '1',tuoi: '19');
+    // Student student1 = Student('hoc sinh 2','fdf','fdf');
+    // student1.name = 'hoc sinh';
     return Scaffold(
       body: Container(
         child: Center(
@@ -28,8 +32,10 @@ class _ProviderBaseScreenState extends State<ProviderBaseScreen> {
 
 class Student {
   String? name;
+  String? tuoi;
+  String? id;
 
-  Student({this.name}) {
-    print('Khoi tao Student');
-  }
+  // Student(this.name,this.tuoi,this.id);
+  Student({this.name,this.tuoi,this.id});
+  // Student([this.name,this.tuoi,this.id]);
 }

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  // Cung cấp thể hiện cho các widget con
   // runApp(MaterialApp(
   //   home: Provider(
   //     lazy: true,
@@ -16,8 +17,8 @@ void main() {
   // ));
 
   // runApp(MaterialApp(
-  //   home: ChangeNotifierProvider<TodoModel>(
-  //     create: (_) => TodoModel(name: 'Todo 1'),
+  //   home: ChangeNotifierProvider<ProductModel>(
+  //     create: (_) => ProductModel(name: 'Banh mi'),
   //     lazy: true,
   //     child: ProviderChange(),
   //   ),
@@ -31,11 +32,24 @@ void main() {
   //   ),
   // ));
 
+  // runApp(MaterialApp(
+  //   home: ChangeNotifierProvider<TodoProvider>(
+  //     create: (_) => TodoProvider(),
+  //     lazy: true,
+  //     child: TodoListScreen(),
+  //   ),
+  // ));
+
   runApp(MaterialApp(
-    home: ChangeNotifierProvider<TodoProvider>(
-      create: (_) => TodoProvider(),
-      lazy: true,
-      child: TodoListScreen(),
+    home: MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CounterProvider()),
+        // chỉ đc phép nằm dưới hoặc dưới cấp
+        ProxyProvider<CounterProvider, Translations>(
+          update: (_, counter, __) => Translations(counter.counter),
+        ),
+      ],
+      child: CounterScreen(),
     ),
   ));
 }

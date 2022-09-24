@@ -17,6 +17,12 @@ class _CounterScreenState extends State<CounterScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
+            Consumer<Translations>(builder: (context, model, _) {
+              print('builder');
+              return Text('translate: ${model.title}');
+            }),
+
             Consumer<CounterProvider>(builder: (context, model, _) {
               print('builder');
               return Text('${model.counter}');
@@ -61,6 +67,14 @@ class _CounterScreenState extends State<CounterScreen> {
     );
   }
 }
+class Translations {
+  const Translations(this._value);
+
+  final int _value;
+
+  String get title => 'You clicked $_value times';
+}
+
 
 class CounterProvider extends ChangeNotifier {
   int counter = 0;

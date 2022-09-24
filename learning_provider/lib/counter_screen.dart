@@ -17,6 +17,7 @@ class _CounterScreenState extends State<CounterScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Consumer(builder: (_, CounterProvider model, __) {
+
             print('on builder');
             return Text('${model.counter}');
           }),

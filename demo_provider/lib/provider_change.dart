@@ -15,11 +15,12 @@ class _ProviderChangeState extends State<ProviderChange> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('${context.watch<ProductModel>().name}'),
-          Consumer<ProductModel>(builder: (context, model, _) {
-            print('builder');
-            return Text('${model.name}');
-          }),
+          // Text('read: ${context.watch<ProductModel>().name}'),
+          Text('watch: ${context.watch<ProductModel>().name}'),
+          // Consumer<ProductModel>(builder: (context, model, _) {
+          //   print('builder');
+          //   return Text('${model.name}');
+          // }),
           InkWell(
             onTap: () {
               String name = context.read<ProductModel>().name ?? '';
